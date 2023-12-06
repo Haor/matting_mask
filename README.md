@@ -39,7 +39,7 @@ Run the script with the following command line parameters:
 python split_video.py -i [input_path] -o [output_directory] -f [fps] [-m] [-mo] [-a] [-t]
 ```
 
-- `-i`/`--input`: The input path. This should be the path to the video file.
+- `-i`/`--input`: Input video path or directory. This should be the path to the video.
 - `-o`/`--output`: The output directory. This should be a directory where the processed frames will be placed.
 - `-f`/`--fps`: The framerate to process. This parameter determines how many frames are processed into images, default is 1.
 - `-m`/`--mask`: If set, the script will output a mask image instead of the processed image.
