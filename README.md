@@ -47,6 +47,4 @@ python split_video.py -i [input_path] -o [output_directory] -f [fps] [-m] [-mo] 
 - `-t`/`--trim`: The number of seconds to trim from the end of the video and audio. Default is 3 seconds, suitable for TikTok videos. If a specific value is not provided, the default value of 3 seconds will be used.
 
 ## Note
-The model file should be stored in the 'cv_unet_universal-matting' directory and the filename should be 'tf_graph.pb'. If the model file does not exist or is not found, the script will throw a FileNotFoundError.
-
-Please make sure the input and output paths are correct, otherwise errors may occur.
+The model file should be stored in the 'cv_unet_universal-matting' directory and the filename should be 'tf_graph.pb'.
