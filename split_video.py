@@ -82,21 +82,53 @@ def split_video(input_video, output_dir, fps, output_mask, apply_morphology, tri
     logger.info(f'Total processed frames: {len(processed_files)}')
 
 
-if __name__ == "__main__":
+def process_directory(input_directory, output_directory, fps, output_mask, apply_morphology, trim_seconds, audio):
+    if not os.path.isdir(input_directory):
+        logger.error(f'Input directory does not exist: {input_directory}')
+        return
+
+    for filename in os.listdir(input_directory):
+        input_path = os.path.join(input_directory, filename)
+        if os.path.isfile(input_path) and filename.lower().endswith(('.mp4', '.avi', '.mov', '.mkv')):
+            video_name = os.path.splitext(filename)[0]
+            video_output_dir = os.path.join(output_directory, video_name)
+            audio_path = audio if audio is not True else os.path.join(video_output_dir, "audio.mp3")
+
+            split_video(input_path, video_output_dir, fps, output_mask, apply_morphology, trim_seconds)
+
+            if audio is not None:
+                extract_audio_from_video(input_path, audio_path, trim_seconds)
+
+def process_single_video(input_path, output_directory, fps, output_mask, apply_morphology, trim_seconds, audio):
+    video_name = os.path.splitext(os.path.basename(input_path))[0]
+    video_output_dir = os.path.join(output_directory, video_name)
+    audio_path = audio if audio is not True else os.path.join(output_directory, video_name, "audio.mp3")
+
+    split_video(input_path, video_output_dir, fps, output_mask, apply_morphology, trim_seconds)
+
+    if audio is not None:
+        extract_audio_from_video(input_path, audio_path, trim_seconds)
+
+def process_input(args):
+    trim_seconds = args.trim if args.trim is not None else 0
+
+    if os.path.isdir(args.input):
+        process_directory(args.input, args.output, args.fps, args.mask, args.morphology, trim_seconds, args.audio)
+    else:
+        process_single_video(args.input, args.output, args.fps, args.mask, args.morphology, trim_seconds, args.audio)        
+        
+def main():
     parser = argparse.ArgumentParser(description="Video Processing Pipeline")
-    parser.add_argument("-i", "--input", help="Input video path", required=True)
+    parser.add_argument("-i", "--input", help="Input video path or directory", required=True)
     parser.add_argument("-o", "--output", help="Output directory for the processed frames", required=True)
     parser.add_argument("-f", "--fps", help="Framerate to process", type=int, default=1)
     parser.add_argument("-m", "--mask", help="If set, output the mask image instead of the processed image.", action="store_true")
     parser.add_argument("-mo", "--morphology", help="If set, enables morphological processing on the mask.", action="store_true")
     parser.add_argument("-a", "--audio", help="Output path for the extracted audio", nargs='?', const=True, default=None)
-    parser.add_argument("-t", "--trim", help="The number of seconds to trim from the end of the video and audio. Default is 3 seconds.For Tiktok video.", type=float, nargs='?', const=3, default=None)
+    parser.add_argument("-t", "--trim", help="The number of seconds to trim from the end of the video and audio. Default is 3 seconds. For Tiktok video.", type=float, nargs='?', const=3, default=None)
     args = parser.parse_args()
 
-    trim_seconds = args.trim if args.trim is not None else 0
-    audio_path = args.audio if args.audio is not True else os.path.join(args.output, "audio.mp3")
+    process_input(args)
 
-    split_video(args.input, args.output, args.fps, args.mask, args.morphology, trim_seconds)
-
-    if args.audio is not None:
-        extract_audio_from_video(args.input, audio_path, trim_seconds)
+if __name__ == "__main__":
+    main()
