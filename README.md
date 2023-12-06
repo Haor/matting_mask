@@ -14,6 +14,7 @@ The model can be cloned from the following Git repository:
 
 Navigate to the project directory and clone the repository:
 ```shell
+apt install git-lfs
 cd your_project_directory
 git clone https://www.modelscope.cn/damo/cv_unet_universal-matting.git
 ```
