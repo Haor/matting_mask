@@ -82,7 +82,6 @@ def run_pipeline(pipeline, input_image_path: str, output_image_path: str, output
         else:
             output_img = (output_img * 255).astype(np.uint8) if output_img.dtype != np.uint8 else output_img
             cv2.imwrite(output_image_path, output_img)
-    print(f"Inference completed successfully for {input_image_path}")
 
 def main(input_path, output_path, output_mask, apply_morphology=True):
     supported_extensions = ['.jpg', '.png', '.jpeg', '.webp']
@@ -112,7 +111,7 @@ def main(input_path, output_path, output_mask, apply_morphology=True):
                     else:
                         output_img = (output_img * 255).astype(np.uint8) if output_img.dtype != np.uint8 else output_img
                         cv2.imwrite(output_image_path, output_img)
-                print(f"Inference completed successfully for {input_image_path}")
+                print(f"\rInference completed successfully for {input_image_path}", end='', flush=True)
 
     elif os.path.isfile(input_path) and os.path.splitext(input_path)[1].lower() in supported_extensions:
         run_pipeline(pipeline, input_path, output_path, output_mask=output_mask)
