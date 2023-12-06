@@ -1,6 +1,6 @@
 # Image Matting Script Documentation
 
-This project is an image matting/segmentation script implemented with TensorFlow and OpenCV, using the Damo Academy's BSHM generic matting model (https://modelscope.cn/models/damo/cv_unet_universal-matting/).
+This project is an image matting/segmentation script implemented with TensorFlow and OpenCV, using the Damo Academy's BSHM generic matting model.
 
 The script can perform matting on a single image or all the images in a directory, and can generate masks. Morphological processing can also be applied if needed.
 
