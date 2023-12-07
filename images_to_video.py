@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    images_to_video(args.folder, args.output, args.fps)
+    images_to_video(args.input, args.output, args.fps)
     
     
     
